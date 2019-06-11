@@ -1,7 +1,6 @@
 package br.unigranrio.arcd.resources;
 
 import java.net.URI;
-import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.unigranrio.arcd.domain.Monitoring;
-import br.unigranrio.arcd.resources.utils.URL;
+import br.unigranrio.arcd.resources.utils.Utils;
 import br.unigranrio.arcd.services.MonitoringService;
 
 @RestController
@@ -55,21 +54,16 @@ public class MonitoringResource {
 	
 	@RequestMapping(value="/page/datas", method=RequestMethod.GET)
 	public ResponseEntity<Page<Monitoring>> findPage(
-			@RequestParam(value="dataIni", defaultValue="") String dataIni, 
-			@RequestParam(value="dataFim", defaultValue="") String dataFim, 
+			@RequestParam(value="dataIni", required = true) String dataIni, 
+			@RequestParam(value="dataFim", required = true) String dataFim, 
 			@RequestParam(value="page", defaultValue="0") Integer page, 
 			@RequestParam(value="linesPerPage", defaultValue="24") Integer linesPerPage, 
 			@RequestParam(value="orderBy", defaultValue="id") String orderBy, 
 			@RequestParam(value="direction", defaultValue="ASC") String direction) {
 
-		Date nomeDecoded1 = URL.decodeDate(dataIni);
-		Date nomeDecoded2 = URL.decodeDate(dataFim);
-
-		Page<Monitoring> list = service.search(nomeDecoded1, nomeDecoded2, page,
+		Page<Monitoring> list = service.search(Utils.sqlDateToDate(dataIni), Utils.sqlDateToDate(dataFim), page,
 				linesPerPage, orderBy, direction);
 
-		System.out.println("TESTANNNDO");
-		System.out.println(dataFim);
 		return ResponseEntity.ok().body(list);
 	}
 }
