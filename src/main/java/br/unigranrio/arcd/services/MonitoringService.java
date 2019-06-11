@@ -1,5 +1,7 @@
 package br.unigranrio.arcd.services;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,15 @@ public class MonitoringService {
 		if(obj == null) {
 			throw new ObjectNotFoundException("Objeto com id: "+ id + " não encontrado!");
 		}
+		
+		return obj;
+	}
+	
+	@Transactional
+	public Monitoring insert(Monitoring obj) {
+		obj.setId(null);;
+		obj = repo.save(obj);
+		System.out.println(obj);
 		
 		return obj;
 	}
