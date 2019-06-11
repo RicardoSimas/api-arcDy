@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.unigranrio.arcd.domain.Monitoring;
+import br.unigranrio.arcd.domain.MonitoringReport;
+import br.unigranrio.arcd.repositories.MonitoringRepository;
 import br.unigranrio.arcd.resources.utils.Utils;
 import br.unigranrio.arcd.services.MonitoringService;
 
@@ -23,6 +25,9 @@ public class MonitoringResource {
 	
 	@Autowired
 	private MonitoringService service;
+	
+	@Autowired
+	private MonitoringRepository repo;
 
 	@RequestMapping(value = "/{id}",method = RequestMethod.GET)
 	public ResponseEntity<Monitoring> find(@PathVariable Integer id) {
@@ -51,19 +56,15 @@ public class MonitoringResource {
 
 		return ResponseEntity.ok().body(list);
 	}
-	
-	@RequestMapping(value="/page/datas", method=RequestMethod.GET)
-	public ResponseEntity<Page<Monitoring>> findPage(
+		
+	@RequestMapping(value="/report", method=RequestMethod.GET)
+	public ResponseEntity<MonitoringReport> findPage(
 			@RequestParam(value="dataIni", required = true) String dataIni, 
-			@RequestParam(value="dataFim", required = true) String dataFim, 
-			@RequestParam(value="page", defaultValue="0") Integer page, 
-			@RequestParam(value="linesPerPage", defaultValue="24") Integer linesPerPage, 
-			@RequestParam(value="orderBy", defaultValue="id") String orderBy, 
-			@RequestParam(value="direction", defaultValue="ASC") String direction) {
-
-		Page<Monitoring> list = service.search(Utils.sqlDateToDate(dataIni), Utils.sqlDateToDate(dataFim), page,
-				linesPerPage, orderBy, direction);
-
-		return ResponseEntity.ok().body(list);
+			@RequestParam(value="dataFim",required = true) String dataFim){	
+		MonitoringReport report = repo.findCorrenteTensaoCustoBetweenRegistroData(
+				Utils.sqlDateToDate(dataIni),
+				Utils.sqlDateToDate(dataFim));
+		
+		return ResponseEntity.ok().body(report);
 	}
 }

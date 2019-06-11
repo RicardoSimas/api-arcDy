@@ -54,9 +54,6 @@ public class MonitoringService {
 			Integer linesPerPage, String orderBy, String direction) {
 		PageRequest pageRequest = new PageRequest(page, linesPerPage,
 				Direction.valueOf(direction), orderBy);
-
-		System.out.println("TESTANNNDO");
-		System.out.println(dataFim);
 		
 		return repo.findByregistroDataBetween(dataIni, dataFim, pageRequest);	
 	}
