@@ -58,6 +58,6 @@ public class MonitoringService {
 		System.out.println("TESTANNNDO");
 		System.out.println(dataFim);
 		
-		return repo.search(dataIni, dataFim, pageRequest);	
+		return repo.findByregistroDataBetween(dataIni, dataFim, pageRequest);	
 	}
 }
