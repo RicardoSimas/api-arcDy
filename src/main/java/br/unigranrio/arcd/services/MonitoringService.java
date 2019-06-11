@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 
 import br.unigranrio.arcd.domain.Monitoring;
 import br.unigranrio.arcd.repositories.MonitoringRepository;
+import br.unigranrio.arcd.resources.exceptions.ObjectNotFoundException;
+
 
 @Service
 public class MonitoringService {
@@ -15,6 +17,10 @@ public class MonitoringService {
 	public Monitoring find(Integer id) {
 		
 		Monitoring obj = repo.findOne(id);
+		
+		if(obj == null) {
+			throw new ObjectNotFoundException("Objeto com id: "+ id + " não encontrado!");
+		}
 		
 		return obj;
 	}
