@@ -1,5 +1,7 @@
 package br.unigranrio.arcd.services;
 
+import java.util.Date;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,5 +48,16 @@ public class MonitoringService {
 				Direction.valueOf(direction), orderBy);
 
 		return repo.findAll(pageRequest);
+	}
+	
+	public Page<Monitoring> search(Date dataIni, Date dataFim, Integer page,
+			Integer linesPerPage, String orderBy, String direction) {
+		PageRequest pageRequest = new PageRequest(page, linesPerPage,
+				Direction.valueOf(direction), orderBy);
+
+		System.out.println("TESTANNNDO");
+		System.out.println(dataFim);
+		
+		return repo.search(dataIni, dataFim, pageRequest);	
 	}
 }
