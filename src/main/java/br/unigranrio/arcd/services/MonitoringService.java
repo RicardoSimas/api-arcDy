@@ -3,6 +3,9 @@ package br.unigranrio.arcd.services;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import br.unigranrio.arcd.domain.Monitoring;
@@ -34,5 +37,14 @@ public class MonitoringService {
 		System.out.println(obj);
 		
 		return obj;
+	}
+	
+	public Page<Monitoring> findPage(Integer page, Integer linesPerPage,
+			String orderBy, String direction){
+
+		PageRequest pageRequest = new PageRequest(page, linesPerPage,
+				Direction.valueOf(direction), orderBy);
+
+		return repo.findAll(pageRequest);
 	}
 }
