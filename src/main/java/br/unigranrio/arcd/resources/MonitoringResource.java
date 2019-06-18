@@ -5,6 +5,8 @@ import java.net.URI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,6 +39,8 @@ public class MonitoringResource {
 		return ResponseEntity.ok().body(obj);
 	}
 	
+	@CrossOrigin(origins = "*")
+	@GetMapping("/greeting")
 	@RequestMapping(method=RequestMethod.POST)
 	public ResponseEntity<Void> insert(@RequestBody Monitoring obj) {
 		obj = service.insert(obj);
@@ -45,6 +49,8 @@ public class MonitoringResource {
 		return ResponseEntity.created(uri).build();
 	}
 	
+	@CrossOrigin(origins = "*") 
+	@GetMapping("/greeting")
 	@RequestMapping(value="/page", method=RequestMethod.GET)
 	public ResponseEntity<Page<Monitoring>> findPage(
 			@RequestParam(value="page", defaultValue="0") Integer page, 
@@ -56,7 +62,9 @@ public class MonitoringResource {
 
 		return ResponseEntity.ok().body(list);
 	}
-		
+	
+	@CrossOrigin(origins = "*") 
+	@GetMapping("/greeting")
 	@RequestMapping(value="/report", method=RequestMethod.GET)
 	public ResponseEntity<MonitoringReport> findPage(
 			@RequestParam(value="dataIni", required = true) String dataIni, 
